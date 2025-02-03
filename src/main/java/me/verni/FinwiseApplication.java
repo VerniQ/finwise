@@ -1,7 +1,14 @@
 package me.verni;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+@SpringBootApplication
+@EnableJpaRepositories(basePackages = "me.verni")
 public class FinwiseApplication {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        SpringApplication.run(FinwiseApplication.class, args);
+
     }
 }

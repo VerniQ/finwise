@@ -1,22 +1,26 @@
 package me.verni.category;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class CategoryService {
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getCategories(){
+    public List<Category> getCategories() {
         return categoryRepository.findAll();
     }
-    public Category saveCategory(Category category){
+
+    public Category saveCategory(Category category) {
         return categoryRepository.save(category);
     }
 
-    public Category findByName(String name){
+    public Category findByName(String name) {
         return categoryRepository.findByName(name);
     }
 }

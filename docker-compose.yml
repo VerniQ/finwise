@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: finwise
     ports:
-      - "5433:5433"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -23,6 +23,19 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+
+  app:
+    build: .
+    container_name: finwise-app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/finwise
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
 
 volumes:
   postgres_data:

@@ -1,16 +1,20 @@
 package me.verni.budget;
 
+import jakarta.transaction.Transactional;
 import me.verni.user.User;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BudgetService {
-    private BudgetRepository budgetRepository;
+    private final BudgetRepository budgetRepository;
 
     public BudgetService(BudgetRepository budgetRepository) {
         this.budgetRepository = budgetRepository;
     }
 
+    @Transactional
     public Budget saveBudget(Budget budget){
         return budgetRepository.save(budget);
     }
