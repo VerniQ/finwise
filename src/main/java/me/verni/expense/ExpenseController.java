@@ -1,9 +1,7 @@
 package me.verni.expense;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,14 +18,23 @@ public class ExpenseController {
     public List<Expense> getExpenses(){
         return expenseService.getExpenses();
     }
-
     @GetMapping("/user/{userId}")
     public List<Expense> getExpensesByUser(Long userId) {
         return expenseService.findByUserId(userId);
     }
-
     @PostMapping
     public Expense saveExpense(Expense expense) {
         return expenseService.saveExpense(expense);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Expense> updateExpense(@RequestBody Expense expense) {
+        return ResponseEntity.ok(expenseService.updateExpense(expense));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
+        expenseService.deleteExpense(id);
+        return ResponseEntity.noContent().build();
     }
 }

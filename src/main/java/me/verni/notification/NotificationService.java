@@ -28,5 +28,11 @@ public class NotificationService {
     public List<Notification> findByUser(User user){
         return notificationRepository.findByUser(user);
     }
+    public Notification updateNotification(Notification notification){
+        return notificationRepository.save(notification);
+    }
+    public void deleteNotification(Long id){
+        notificationRepository.deleteById(id);
+    }
 
 }

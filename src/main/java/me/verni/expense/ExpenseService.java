@@ -28,4 +28,10 @@ public class ExpenseService {
     public List<Expense> findByUserId(Long userId){
         return expenseRepository.findByUserId(userId);
     }
+    public Expense updateExpense(Expense expense){
+        return expenseRepository.save(expense);
+    }
+    public void deleteExpense(Long id){
+        expenseRepository.deleteById(id);
+    }
 }

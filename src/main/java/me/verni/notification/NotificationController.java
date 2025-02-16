@@ -1,10 +1,7 @@
 package me.verni.notification;
 
 import me.verni.user.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +23,21 @@ public class NotificationController {
     @GetMapping("/user/{userId}")
     public List<Notification> getNotificationByUser(@PathVariable Long userId) {
         return notificationService.findByUserId(userId);
+    }
+
+    @PostMapping
+    public Notification saveNotification(@RequestBody Notification notification) {
+        return notificationService.saveNotification(notification);
+    }
+
+    @PutMapping("/{id}")
+    public Notification updateNotification(@RequestBody Notification notification) {
+        return notificationService.updateNotification(notification);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteNotification(@PathVariable Long id) {
+        notificationService.deleteNotification(id);
     }
     
 }

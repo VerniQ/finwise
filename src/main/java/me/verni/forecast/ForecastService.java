@@ -24,4 +24,10 @@ public class ForecastService {
     public List<Forecast> findByUser(User user){
         return forecastRepository.findByUser(user);
     }
+    public Forecast updateForecast(Forecast forecast){
+        return forecastRepository.save(forecast);
+    }
+    public void deleteForecast(Long id){
+        forecastRepository.deleteById(id);
+    }
 }
