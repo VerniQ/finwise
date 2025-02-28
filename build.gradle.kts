@@ -38,6 +38,10 @@ dependencies {
     implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
     implementation("org.jboss.logging:jboss-logging:3.5.0.Final")
     testImplementation("org.springframework.security:spring-security-test")
+
+    //BCrypt
+    implementation("org.mindrot:jbcrypt:0.4")
+
 }
 
 tasks.test {

@@ -3,6 +3,7 @@ package me.verni.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import me.verni.util.PasswordHasher;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -40,7 +41,7 @@ public class User {
     public User(String name, String email, String password){
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.password = PasswordHasher.hash(password);
     }
     public User() {
 
@@ -75,15 +76,11 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = PasswordHasher.hash(password);
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
