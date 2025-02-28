@@ -5,37 +5,50 @@ import me.verni.auth.dto.RegistrationRequestDto;
 import me.verni.exception.UserLoginException;
 import me.verni.exception.UserRegistrationException;
 import me.verni.user.UserService;
+import me.verni.util.JwtUtil;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
-    @PostMapping("/signup") // Fixed typo in endpoint name
-    public ResponseEntity<String> register(@RequestBody RegistrationRequestDto request) {
+    @PostMapping("/signup")
+    public ResponseEntity<?> register(@RequestBody RegistrationRequestDto request) {
         try {
-            userService.createUser(request.getUsername(), request.getEmail(), request.getPassword());
-            return ResponseEntity.ok("User registered successfully");
+            userService.createUser(request.getName(), request.getEmail(), request.getPassword());
+            return ResponseEntity.ok(Map.of("message", "User registered successfully"));
         } catch (UserRegistrationException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
         try {
-            userService.login(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok("Login successful");
+            var user = userService.login(request.getEmail(), request.getPassword());
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+
+            return ResponseEntity.ok(Map.of(
+                    "message", "Login successful",
+                    "token", token
+            ));
         } catch (UserLoginException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
-}
 
+}

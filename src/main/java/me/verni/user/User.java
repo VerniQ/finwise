@@ -6,13 +6,18 @@ import jakarta.validation.constraints.NotNull;
 import me.verni.util.PasswordHasher;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
-@Table(name="users")
-public class User {
+@Table(name = "users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +35,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String role;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -38,14 +46,14 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public User(String name, String email, String password){
+    public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
         this.password = PasswordHasher.hash(password);
+        this.role = role;
     }
-    public User() {
 
-    }
+    public User() {}
 
     public Long getId() {
         return userId;
@@ -55,12 +63,12 @@ public class User {
         this.userId = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -75,19 +83,45 @@ public class User {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public void setPassword(String password) {
         this.password = PasswordHasher.hash(password);
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public String getName() {
+        return name;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

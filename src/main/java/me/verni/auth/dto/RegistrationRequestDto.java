@@ -1,17 +1,17 @@
 package me.verni.auth.dto;
 
 public class RegistrationRequestDto {
-    private String username;
+    private String name;
     private String email;
     private String password;
 
     // Getters and setters
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String username) {
+        this.name = username;
     }
 
     public String getEmail() {
