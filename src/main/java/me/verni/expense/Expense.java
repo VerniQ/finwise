@@ -29,7 +29,7 @@ public class Expense {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    private String description;
+    private String title;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -38,12 +38,12 @@ public class Expense {
 
     }
 
-    public Expense(User user, Category category, LocalDateTime expenseDate, BigDecimal amount, String description){
+    public Expense(User user, Category category, LocalDateTime expenseDate, BigDecimal amount, String title){
         this.user = user;
         this.category = category;
         this.expenseDate = expenseDate;
         this.amount = amount;
-        this.description = description;
+        this.title = title;
     }
 
     public Long getExpenseId() {
@@ -86,12 +86,12 @@ public class Expense {
         this.amount = amount;
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setTitle(String description) {
+        this.title = description;
     }
 
     public LocalDateTime getCreatedAt() {
