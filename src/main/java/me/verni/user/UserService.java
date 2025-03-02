@@ -29,6 +29,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("CUsernot found"));
+    }
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }
